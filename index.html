@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Research Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fafaf8;
+      --text: #1a1a18;
+      --muted: #888882;
+      --border: #e4e4de;
+      --accent: #2a52a0;
+      --accent-light: #eef1f9;
+      --surface: #ffffff;
+      --radius: 10px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 72px 24px 96px;
+    }
+
+    /* Header */
+    header {
+      margin-bottom: 52px;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .eyebrow {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.9rem, 5vw, 2.6rem);
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      margin-bottom: 16px;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.75;
+      font-weight: 300;
+      max-width: 460px;
+    }
+
+    /* Rule */
+    .rule {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 40px 0;
+    }
+
+    /* Section label */
+    .section-label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    /* Resources */
+    .resources {
+      margin-bottom: 48px;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+
+    .resource-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .resource-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 18px;
+      border-radius: var(--radius);
+      text-decoration: none;
+      color: var(--text);
+      transition: background 0.18s;
+      border: 1px solid transparent;
+    }
+
+    .resource-card:hover {
+      background: var(--surface);
+      border-color: var(--border);
+    }
+
+    .resource-type {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      border-radius: 4px;
+      padding: 3px 7px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .resource-type.url {
+      color: #1a7a5e;
+      background: #edf5f2;
+    }
+
+    .resource-info { flex: 1; min-width: 0; }
+
+    .resource-title {
+      font-size: 0.9rem;
+      font-weight: 400;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 2px;
+    }
+
+    .resource-meta {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    .resource-arrow {
+      color: var(--border);
+      font-size: 13px;
+      transition: color 0.18s, transform 0.18s;
+      flex-shrink: 0;
+    }
+
+    .resource-card:hover .resource-arrow {
+      color: var(--accent);
+      transform: translateX(2px);
+    }
+
+    /* Email signup */
+    .signup {
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+
+    .signup-inner {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+    }
+
+    .signup-inner h2 {
+      font-family: 'Lora', serif;
+      font-size: 1.2rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+
+    .signup-inner p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.7;
+      font-weight: 300;
+      margin-bottom: 22px;
+    }
+
+    .email-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .email-input {
+      flex: 1;
+      min-width: 180px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 11px 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.18s;
+    }
+
+    .email-input::placeholder { color: #bbbbb5; }
+    .email-input:focus { border-color: var(--accent); }
+
+    .submit-btn {
+      background: var(--text);
+      color: var(--bg);
+      border: none;
+      border-radius: 7px;
+      padding: 11px 22px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.18s;
+      white-space: nowrap;
+    }
+
+    .submit-btn:hover { opacity: 0.75; }
+
+    .success-msg {
+      display: none;
+      font-size: 0.85rem;
+      color: #1a7a5e;
+      margin-top: 14px;
+    }
+
+    .success-msg.show { display: block; }
+
+    /* Footer */
+    footer {
+      margin-top: 64px;
+      font-size: 0.72rem;
+      color: #ccccc6;
+      text-align: center;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 420px) {
+      .signup-inner { padding: 24px 18px; }
+      .email-row { flex-direction: column; }
+      .submit-btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <header>
+    <p class="eyebrow"><span id="year"></span></p>
+    <h1>Mapping voluntary financial support services in England and Wales: <em>Understanding the barriers and facilitators to access</em></h1>
+    <!-- ✏️ EDIT: Replace with a brief description of your project -->
+    <p class="subtitle">
+      Thanks for attending. Below you'll find papers and links referenced in the presentation. Sign up to receive updates as the work progresses.
+    </p>
+  </header>
+
+  <!-- RESOURCES -->
+  <section class="resources">
+    <p class="section-label">Papers &amp; Links</p>
+    <div class="resource-list">
+
+      <!-- ✏️ EDIT each card: set href, title, and meta -->
+
+      <a class="resource-card" href="YOUR_PDF_LINK_2" target="_blank" rel="noopener">
+        <span class="resource-type">PDF</span>
+        <div class="resource-info">
+          <div class="resource-title">Presentation Slides</div>
+          <div class="resource-meta">Slides from today's talk</div>
+        </div>
+        <span class="resource-arrow">&#x2197;</span>
+      </a>
+
+      <a class="resource-card" href="https://www.ucl.ac.uk/brain-sciences/psychiatry/research/marie-curie-palliative-care-research-department" target="_blank" rel="noopener">
+        <span class="resource-type url">URL</span>
+        <div class="resource-info">
+          <div class="resource-title">MCPCRD Website</div>
+          <div class="resource-meta">ucl.ac.uk</div>
+        </div>
+        <span class="resource-arrow">&#x2197;</span>
+      </a>
+
+      <a class="resource-card" href="YOUR_URL_2" target="_blank" rel="noopener">
+        <span class="resource-type url">URL</span>
+        <div class="resource-info">
+          <div class="resource-title">Data / Code Repository</div>
+          <div class="resource-meta">GitHub &middot; Dataset or codebase</div>
+        </div>
+        <span class="resource-arrow">&#x2197;</span>
+      </a>
+
+    </div>
+  </section>
+
+  <hr class="rule"/>
+
+  <!-- EMAIL SIGNUP -->
+  <section class="signup">
+    <div class="signup-inner">
+      <h2>Stay updated</h2>
+      <p>Leave your email and I'll notify you when new findings, publications, or project milestones are ready to share.</p>
+      <div class="email-row">
+        <input
+          class="email-input"
+          type="email"
+          id="emailInput"
+          placeholder="your@email.com"
+          autocomplete="email"
+        />
+        <button class="submit-btn" onclick="handleSubmit()">Subscribe</button>
+      </div>
+      <div class="success-msg" id="successMsg">&#x2713; You're subscribed. I'll be in touch.</div>
+    </div>
+  </section>
+
+  <!-- ✏️ EDIT: Replace with your name / affiliation / contact -->
+  <footer>
+    Your Name &middot; Institution &middot; <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="84fdebf1f6e7ebeaf0e5e7f0c4f1eaedf2e1f6f7edf0fdaae1e0f1">[email&#160;protected]</a>
+  </footer>
+
+</div>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  function handleSubmit() {
+    const input = document.getElementById('emailInput');
+    const email = input.value.trim();
+    const msg = document.getElementById('successMsg');
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      input.style.borderColor = '#e05a4a';
+      input.focus();
+      setTimeout(() => input.style.borderColor = '', 1600);
+      return;
+    }
+
+    fetch('https://formspree.io/f/mnjbelaw', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    document.q
